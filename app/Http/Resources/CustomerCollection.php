@@ -16,13 +16,10 @@ class CustomerCollection extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'cnpj' => $this->cnpj,
-            'street' => $this->street,
-            'number' => $this->number,
-            'postcode' => $this->postcode,
-            'neighborhood' => $this->neighborhood,
-            'city' => $this->city,
-            'state' => $this->state
+            'email' => $this->email,
+            'phone' => $this->phone,
+            'birth' => $this->birth,
+            'born' => $this->born
         ];
     }
 }

@@ -6,7 +6,6 @@ use App\Http\Requests\CompanyRequest;
 use App\Http\Resources\CompanyCollection;
 use App\Services\CompanyService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 
@@ -43,8 +42,7 @@ class CompanyController extends Controller
      */
     public function store(CompanyRequest $request): JsonResponse
     {
-        echo'<pre>';print_r($request->all());exit('teste');
-        $response = $this->companyService->create($request->all());
+        $response = $this->companyService->store($request->all());
         if(!$response['status'])
             return response()->json(['message' => $response['message']], Response::HTTP_INTERNAL_SERVER_ERROR);
         return response()->json(['message' => $response['message']], Response::HTTP_OK);
@@ -53,10 +51,10 @@ class CompanyController extends Controller
     /**
      * Update company
      * @param $id
-     * @param Request $request
+     * @param CompanyRequest $request
      * @return JsonResponse
      */
-    public function update($id, Request $request): JsonResponse
+    public function update($id, CompanyRequest $request): JsonResponse
     {
         $response = $this->companyService->update($id, $request->all());
         if(!$response['status'])
@@ -67,9 +65,10 @@ class CompanyController extends Controller
     /**
      * Delete company
      * @param $id
+     * @param CompanyRequest $request
      * @return JsonResponse
      */
-    public function delete($id): JsonResponse
+    public function delete($id, CompanyRequest $request): JsonResponse
     {
         $response = $this->companyService->delete($id);
         if(!$response['status'])

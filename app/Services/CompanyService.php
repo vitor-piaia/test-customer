@@ -30,20 +30,29 @@ class CompanyService
 
     /**
      * Store company
-     * @param array $data
+     * @param array $post
      * @return array
      */
-    public function create(array $data): array
+    public function store(array $post): array
     {
         DB::beginTransaction();
         try {
-            $company = $this->model->create($data);
+            $company = $this->model->create([
+                'name' => $post['name'],
+                'cnpj' => $post['cnpj'],
+                'street' => $post['street'],
+                'number' => $post['number'],
+                'postcode' => $post['postcode'],
+                'neighborhood' => $post['neighborhood'],
+                'city' => $post['city'],
+                'state' => $post['state']
+            ]);
             if (!$company->id) {
                 DB::rollback();
                 return ['status' => false, 'message' => 'Ocorreu um erro.'];
             }
             DB::commit();
-            return ['status' => true, 'message' => 'Empresa cadastrada com successo.'];
+            return ['status' => true, 'message' => 'Empresa cadastrada com successo.', 'company' => $company];
         } catch (\Exception $e) {
             DB::rollback();
             return ['status' => false, 'message' => $e->getMessage()];
@@ -53,14 +62,25 @@ class CompanyService
     /**
      * Update company
      * @param int $id
-     * @param array $data
+     * @param array $post
      * @return array
      */
-    public function update(int $id, array $data): array
+    public function update(int $id, array $post): array
     {
         DB::beginTransaction();
         try {
-            $update = $this->model->where('id', $id)->update($data);
+            $query = $this->model->where('id', $id);
+            if(!$query->exists())
+                return ['status' => false, 'message' => 'Empresa inexistente.'];
+            $update = $query->first()->update([
+                'name' => $post['name'],
+                'street' => $post['street'],
+                'number' => $post['number'],
+                'postcode' => $post['postcode'],
+                'neighborhood' => $post['neighborhood'],
+                'city' => $post['city'],
+                'state' => $post['state']
+            ]);
             if (!$update) {
                 DB::rollback();
                 return ['status' => false, 'message' => 'Ocorreu um erro.'];
@@ -75,13 +95,17 @@ class CompanyService
 
     /**
      * Delete company
-     * @param $id
+     * @param int $id
      * @return array
      */
     public function delete(int $id): array
     {
         DB::beginTransaction();
         try {
+            $company = $this->model->find($id);
+            if($company->customers()->count() > 0)
+                return ['status' => false, 'message' => 'A empresa não pode ser excluída, ela está vincula a um ou mais clientes.'];
+
             $delete = $this->model->where('id', $id)->delete();
             if (!$delete) {
                 DB::rollback();

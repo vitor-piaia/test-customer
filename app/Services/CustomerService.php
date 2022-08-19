@@ -23,30 +23,42 @@ class CustomerService
      * List customers
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function all()
+    public function all($filters)
     {
+        if(!empty($filters)){
+            $query = $this->model->select();
+            foreach ($filters as $k => $v){
+                if(in_array($k, $this->model->getFillable()))
+                $query->where($k, 'LIKE', '%'.$v.'%');
+            }
+            return $query->get();
+        }
         return $this->model->all();
     }
 
     /**
      * Store customer
-     * @param array $data
+     * @param array $post
      * @return array
      */
-    public function store(array $data): array
+    public function store(array $post): array
     {
         DB::beginTransaction();
         try {
-            $companies = $data['companies'];
-            unset($data['companies']);
-            $customer = $this->model->create($data);
+            $customer = $this->model->create([
+                'name' => $post['name'],
+                'email' => $post['email'],
+                'phone' => $post['phone'],
+                'birth' => $post['birth'],
+                'born' => $post['born']
+            ]);
             if (!$customer->id) {
                 DB::rollback();
                 return ['status' => false, 'message' => 'Ocorreu um erro.'];
             }
-            $customer->companies()->sync($companies);
+            $customer->companies()->sync($post['companies']);
             DB::commit();
-            return ['status' => true, 'message' => 'Cliente criado com successo.'];
+            return ['status' => true, 'message' => 'Cliente criado com successo.', 'customer' => $customer];
         } catch (\Exception $e) {
             DB::rollback();
             return ['status' => false, 'message' => $e->getMessage()];
@@ -56,22 +68,27 @@ class CustomerService
     /**
      * Update customer
      * @param int $id
-     * @param array $data
+     * @param array $post
      * @return array
      */
-    public function update(int $id, array $data): array
+    public function update(int $id, array $post): array
     {
         DB::beginTransaction();
         try {
-            $companies = $data['companies'];
-            unset($data['companies']);
             $query = $this->model->where('id', $id);
-            $update = $query->update($data);
+            if(!$query->exists())
+                return ['status' => false, 'message' => 'Cliente inexistente.'];
+            $update = $query->first()->update([
+                'name' => $post['name'],
+                'phone' => $post['phone'],
+                'birth' => $post['birth'],
+                'born' => $post['born']
+            ]);
             if (!$update) {
                 DB::rollback();
                 return ['status' => false, 'message' => 'Ocorreu um erro.'];
             }
-            $query->first()->companies()->sync($companies);
+            $query->first()->companies()->sync($post['companies']);
             DB::commit();
             return ['status' => true, 'message' => 'Cliente atualizado com successo.'];
         } catch (\Exception $e) {
@@ -89,7 +106,11 @@ class CustomerService
     {
         DB::beginTransaction();
         try {
-            $delete = $this->model->where('id', $id)->delete();
+            $customer = $this->model->find($id);
+            if(empty($customer))
+                return ['status' => false, 'message' => 'Cliente inexistente.'];
+            $customer->companies()->detach();
+            $delete = $customer->delete();
             if (!$delete) {
                 DB::rollback();
                 return ['status' => false, 'message' => 'Ocorreu um erro.'];
