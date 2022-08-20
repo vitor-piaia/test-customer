@@ -19,7 +19,8 @@ class CustomerCollection extends JsonResource
             'email' => $this->email,
             'phone' => $this->phone,
             'birth' => $this->birth,
-            'born' => $this->born
+            'born' => $this->born,
+            'companies' => CompanyCollection::collection($this->companies)
         ];
     }
 }
