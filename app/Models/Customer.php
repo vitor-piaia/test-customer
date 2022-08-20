@@ -52,7 +52,8 @@ class Customer extends Model
     protected function birth(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => Carbon::parse($value)->format('d/m/Y')
+            get: fn ($value) => Carbon::parse($value)->format('d/m/Y'),
+            set: fn ($value) => Carbon::createFromFormat('d/m/Y', $value)->format('Y-m-d')
         );
     }
 }

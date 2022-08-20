@@ -1,64 +1,89 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Desafio | Fullstack
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+O teste consiste em implementar uma lista de contatos e empresas. O projeto, obrigatoriamente, deve ser separado em backend e frontend.
 
-## About Laravel
+## Backend
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+O backend **deve** ser desenvolvido em `php` e **deve** conter uma API Rest.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+O sistema deve conter as seguintes entidades e seus respectivos campos:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Usuário
+    - Nome: obrigatório para preenchimento
+    - E-mail: obrigatório para preenchimento
+    - Telefone: não obrigatório
+    - Data de nascimento: não obrigatório
+    - Cidade onde nasceu: não obrigatório
+    - Empresas: obrigatório para preenchimento
 
-## Learning Laravel
+- Empresa
+    - Nome: obrigatório para preenchimento
+    - CNPJ: obrigatório para preenchimento
+    - Endereço: obrigatório para preenchimento
+    - Usuários: obrigatório para preenchimento
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+A regra de relacionamento para `Usuário` e `Empresa` deve ser de __n para n__
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Banco
+Você **deve** utilizar um banco de dados para o sistema. Pode-se escolher qualquer opção que desejar, mas o seguite cenário deve ser levado em consideração:
+- O sistema lida com informações sensíveis e preza pela integridade dos dados
+- O sistema lida com diferentes entidades relacionadas
 
-## Laravel Sponsors
+Pedimos para que nos sinalize o motivo da escolha do banco no final do documento
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+***Foi utilizado o Postgres por fornecer mais recursos que o MySql***
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+## Testes
+Testes unitários **devem** ser implementados no backend para validação das operações do CRUD.
 
-## Contributing
+Testes unitários **devem** ser implementados no frontend para a tela de exibição dos usuários.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Você pode utilizar o framework de sua preferência tanto para o backend quanto para o frontend.
 
-## Code of Conduct
+## Ambiente
+Aqui na Contato Seguro, utilizamos __Docker__ nos nossos ambientes, então será muito bem visto caso decida utilizar. Principalmente para que tenhamos o mesmo resultado (mesma configuração de ambiente). Caso desenvolva com docker, nos envie junto com o projeto o `docker-compose.yml` e/ou os `Dockerfile´`s.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Requisitos mínimos
+- As 4 operações CRUD, tanto para entidade `Usuário`, quanto para `Empresa`. Todas as operações devem ter rotas específicas no backend.
+- O filtro de registros
+- Código legível, limpo e seguindo boas práticas de Orientação a Objetos
+- Um dump ou DDL do banco de dados
+- Testes unitários
+- Utilizar Docker
+- Separação em commits, especialmente com boas mensagens de identificação.
 
-## Security Vulnerabilities
+## Requisitos bônus
+- Outras entidades e relacionamento entre entidades. Por exemplo: uma entidade `Relatos` ou `Atividades` que tenha `Usuários` e/ou `Empresas` vinculadas.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# Resposta do participante
+_Responda aqui quais foram suas dificuldades e explique a sua solução_
+- Ficou um pouco confuso a descrição de como deveria ser realizado o desenvolvimento, me ambasei em outros projetos que eu já trabalhei para realizar o teste.
 
-## License
+___
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Instalação do projeto
+
+Após realizar o clone do projeto, acesse o diretório docker que está dentro do projeto via linha de comando. 
+
+Execute o comando:
+> docker-compose up -d nginx postgres
+
+Quando finalizar o build do docker o projeto já deverá estar funcionando
+
+Volte para o diretório do projeto e execute o comando:
+> docker exec -it [nome do container] /bin/bash
+
+Faça a cópia do env.example
+> cp .env.example .env
+
+Faça a configuração com os parâmetros necessários.
+
+Execute os comandos:
+> php artisan optimize
+> 
+> php artisan migrate
+> 
+> ./vendor/bin/phpunit
+
+O projeto deverá estar funcinal e com os testes realizados.

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Customer;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
 class CustomerService
@@ -21,9 +22,10 @@ class CustomerService
 
     /**
      * List customers
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @param array $filters
+     * @return Collection
      */
-    public function all($filters)
+    public function all(array $filters): Collection
     {
         if(!empty($filters)){
             $query = $this->model->select();
