@@ -64,7 +64,11 @@ ___
 
 ## Instalação do projeto
 
-Após realizar o clone do projeto, acesse o diretório docker que está dentro do projeto via linha de comando. 
+Após realizar o clone do projeto, acesse o diretório e faça o clone do docker.
+
+> git clone https://github.com/vitor-piaia/docker-customer.git
+
+Acesse o diretorio do docker copie o .env.example para .env e altere a versão do php para 8.1
 
 Execute o comando:
 > docker-compose up -d nginx postgres
